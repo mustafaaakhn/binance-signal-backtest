@@ -1,42 +1,36 @@
-# Binance Signal Analysis
+# Binance Signal Backtest
 
-A small Python app that checks a futures trading signal using Binance trade history. The page is built with Streamlit.
+A simple app for checking old crypto signals with Binance Futures data.
 
-Enter a coin, direction, signal time, entry price, stop loss and take profit prices. The app shows which prices were reached and how long it took. You can also enter margin and leverage to see profit or loss in USDT.
+You can enter a trade manually with:
 
-## Run
+- Coin
+- Long / Short
+- Date and time
+- Entry price
+- Stop Loss
+- Take Profit levels
+- Margin and leverage
 
-You need Python 3.11 or newer.
+The app checks what happened after the signal and shows which TP levels were reached, whether the Stop Loss was hit, and how long each event took.
 
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-streamlit run app.py
-```
+It can also calculate an approximate profit or loss based on the margin and leverage entered.
 
-On Windows, activate the environment with `.venv\Scripts\activate` instead. On macOS or Linux, you can also use `bash run.sh`.
+## Example
+
+A signal:
+
+BTCUSDT  
+LONG  
+Entry: 60000  
+TP1: 61000  
+TP2: 62000  
+SL: 59000
+
+The app checks Binance USD-M Futures historical data and shows the order in which these levels were reached.
 
 ## Notes
 
-- Enter only the coin symbol, like BTC or SOL. USDT is fixed.
-- All dates and times use Istanbul time (UTC+3). Click Now to update the end time.
-- Enter one TP price per line. Use a decimal point or comma, without thousands separators.
-- The whole trade closes at the furthest TP or SL, whichever comes first. There are no partial exits.
-- Each TP row also shows what the result would be if the whole trade closed there. These results should not be added together.
-- Starting balance is the margin you entered. Ending balance is margin plus profit or loss. Fees, funding, slippage and liquidation are not included.
-- The app uses [Binance trade data](https://github.com/binance/binance-public-data) and the Binance futures API. It does not need an API key or place orders.
-- Recent trades come from the API; older trades use daily archives. Downloaded archives stay in `.cache/`. If data is missing or Binance blocks access, the app shows an error.
-
-## Files
-
-- `app.py`: the page and number formatting
-- `engine.py`: entry, TP, SL and balance calculations
-- `binance.py`: fetching and reading Binance data
-- `tests/`: checks for the calculations, data reader and form
-
-Run the tests with:
-
-```bash
-python -m pytest -q
-```
+- This project is for backtesting and checking past trade ideas only.
+- It does not place real trades.
+- Profit or loss values are approximate and do not include fees, funding or slippage.
